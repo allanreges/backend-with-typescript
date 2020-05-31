@@ -2,6 +2,7 @@
 import User from '../../infra/typeorm/entities/User';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository'
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO'
+import { uuid } from 'uuidv4'
 
 
 class UsersRepository implements IUsersRepository {
@@ -18,21 +19,22 @@ class UsersRepository implements IUsersRepository {
     return findUser
   }
 
+  public async create(userData: ICreateUserDTO): Promise<User> {
+    const user = new User()
 
-  public async findByDate(date: Date): Promise<User | undefined> {
+    Object.assign(user, { id: uuid() }, userData)
 
+    this.users.push(user)
 
-    return findAppointment;
-  }
-
-  public async create({ name, email, password }: ICreateUserDTO): Promise<User> {
-
-
-    return appointment
+    return user
   }
 
   public async save(user: User): Promise<User> {
+    const findIndex = this.users.findIndex(findUser => findUser.id === user.id)
 
+    this.users[findIndex] = user
+
+    return user
   }
 }
 
